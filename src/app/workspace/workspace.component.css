@@ -1,0 +1,13 @@
+.workspace {
+    /* position: relative; */
+    background: darkgray;
+    width: 80%;
+    height: 800px;
+    margin: 25px 25px 25px 25px;
+
+    padding-top:   25px;
+    padding-left:  25px;
+    padding-right: 25px;
+
+    overflow: auto;
+}

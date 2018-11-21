@@ -1,0 +1,30 @@
+
+  .message {
+    position: relative;
+    margin-top: 20px;
+    width: 36%;
+    height: auto;
+    border-radius: 10px;
+    background-color: white;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    text-align: center;
+    padding: 10px;
+    word-wrap: break-word;
+
+
+    animation: showmessage  5s;
+
+}
+
+.self_message {
+    margin-left: 64%;
+    background-color: lightblue;
+    color: white;
+}
+
+@keyframes showmessage {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+

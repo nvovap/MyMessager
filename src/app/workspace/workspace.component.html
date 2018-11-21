@@ -1,0 +1,17 @@
+<div class="workspace">
+    <app-message
+        *ngFor="let message of masseges"
+        [message] = "message"
+    >
+    </app-message>
+
+   
+    {{last ? scrollToBottom() : ''}} 
+</div>
+
+<div class="input-field col s12">
+    <input [(ngModel)]="textMessage" id="first_name2" type="text" class="validate">
+    <label class="active" for="first_name2">Количесво пользователей</label>
+</div>
+        
+<a class="waves-effect waves-light btn" (click)="onChange()">Изменить</a>
