@@ -5,9 +5,11 @@
     height: 800px;
     margin: 25px 25px 25px 25px;
 
-    padding-top:   25px;
-    padding-left:  25px;
-    padding-right: 25px;
+    padding:   25px;
 
     overflow: auto;
+}
+
+.workspace-send-message {
+    
 }

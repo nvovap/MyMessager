@@ -4,8 +4,9 @@ import { WebSocketSubject } from 'rxjs/observable/dom/WebSocketSubject';
 
 export class Message {
   constructor(
-      public date: string,
-      public token: string,
+    public sender: string,
+    public content: string,
+    public typeMessage: number
   ) { }
 }
 
@@ -25,7 +26,9 @@ export class TimeComponent implements OnInit {
     this.socket$
             .subscribe(
               (message) => {
-                this.time = message.date
+                if (message.typeMessage == 1) {
+                  this.time = message.content
+                }
               },
               (err) => {
                 console.error(err) 

@@ -20,6 +20,7 @@ var clients = [];
 
 
 
+
 wss.on('connection', (ws) => {
     console.log(wss.clients)
 
@@ -36,22 +37,11 @@ wss.on('connection', (ws) => {
 
         const message = JSON.parse(msg);
 
-        setTimeout(() => {
-            if (message.isBroadcast) {
-
-                //send back the message to the other clients
-                wss.clients
-                    .forEach(client => {
-                        if (client != ws) {
-                            client.send(createMessage(message.content, true, message.sender));
-                        }
-                    });
-
+        wss.clients.forEach(client => {
+            if (client != ws) {
+                client.send(createMessage(message.content, 0, message.sender));
             }
-
-            ws.send(createMessage(`You sent -> ${message.content}`, message.isBroadcast));
-
-        }, 1000);
+        });
 
     });
 
@@ -88,6 +78,17 @@ setInterval(() => {
 
 setInterval(() => {
     wss.clients.forEach((ws) => {
-        if (ws.isAlive) ws.send(JSON.stringify({date:""+Date()}));
+        if (ws.isAlive) ws.send(createMessage(""+Date(), 1, ''));
     });
 }, 1000);
+
+
+function createMessage(content, typeMessage = 0, sender = '') {
+    return JSON.stringify(
+        {
+            content: content,
+            sender: sender,
+            typeMessage: typeMessage
+        }
+    )
+}
