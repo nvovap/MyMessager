@@ -7,6 +7,11 @@ const app = express();
 //initialize a simple http server
 const server = http.createServer(app);
 
+
+app.use(authenticationFile.checkToken);
+
+
+
 //start our server
 server.listen(process.env.PORT || 54321, () => {
     console.log(`Server started on port ${server.address().port} :)`);
@@ -28,8 +33,12 @@ wss.on('connection', (ws) => {
 
     extWs.isAlive = true;
 
+    ws.authorize = false;
+    ws.token = '';
+
     console.log(extWs)
 
+    ws.send(createMessage(""+Date(), 3, 'OK'));
     
 
     //connection is up, let's add a simple simple event
@@ -37,11 +46,34 @@ wss.on('connection', (ws) => {
 
         const message = JSON.parse(msg);
 
-        wss.clients.forEach(client => {
-            if (client != ws) {
-                client.send(createMessage(message.content, 0, message.sender));
+        if (ws.authorize) {
+            
+
+            wss.clients.forEach(client => {
+                if (client != ws) {
+                    client.send(createMessage(message.content, 0, message.sender));
+                }
+            });
+        }  else {
+            try { 
+                ws.token =  message.sender;
+
+                if  (ws.token && (message.typeMessage == 3)) {
+                    //TODO aut for token
+                    ws.authorize = true;
+
+                }  else {
+                    const extWs = ws ;
+
+                    extWs.isAlive = false;
+                    ws.terminate();
+                } 
+                
+
+            } catch (e) {
+                ws.terminate();
             }
-        });
+        } 
 
     });
 
@@ -78,7 +110,7 @@ setInterval(() => {
 
 setInterval(() => {
     wss.clients.forEach((ws) => {
-        if (ws.isAlive) ws.send(createMessage(""+Date(), 1, ''));
+        if (ws.isAlive &&  ws.authorize) ws.send(createMessage(""+Date(), 1, ''));
     });
 }, 1000);
 

@@ -43,6 +43,9 @@ export class WorkspaceComponent implements OnInit {
               (message) => {
                 if (message.typeMessage == 0) {
                   this.masseges.push(message)
+                } else if (message.typeMessage == 3) {
+                  const message = new Message('1234567890', '', 3);
+                  this.socket$.next(message);
                 }
               },
               (err) => {
