@@ -2,10 +2,10 @@
 const Sequelize = require('sequelize');
 const crypto = require('crypto');
 
-
+process.env.HOSTPOSTGRES = '10.10.1.242'
 
 //const sequelize = new Sequelize('map_new_york', 'postgres', '123', {
-const sequelize = new Sequelize('portfolio', process.env.USERPOSTGRES || 'user', process.env.PSWPOSTGRES || '123', {
+const sequelize = new Sequelize('messager', process.env.USERPOSTGRES || 'postgres', process.env.PSWPOSTGRES || '123', {
   host: process.env.HOSTPOSTGRES || 'localhost',
   dialect: 'postgres',
   dialectOptions: {
@@ -41,102 +41,61 @@ const User = sequelize.define('user', {
 
 
 
-const Items = sequelize.define('items', {
-  title: {
+const Messages = sequelize.define('Messages', {
+  message: {
     type: Sequelize.STRING
   },
-  description: {
-    type: Sequelize.STRING
-  },
-  image: {
-    type: Sequelize.STRING
-  },
-  user_id: {
+  from: {
     type: Sequelize.INTEGER
+  },
+  to: {
+    type: Sequelize.INTEGER
+  },
+  owner: {
+    type: Sequelize.INTEGER
+  },
+  dateCreate: {
+    type:  Sequelize.DATE, defaultValue: Sequelize.NOW
   }
 });
 
 
-exports.findAllItemsByTitleAndUser_id = function (title, user_id, order_by, callback) {
+exports.findAllMessagesByUser_id = function (user_id, callback) {
   Items.findAll({
     where: {
-      title: title,
-      user_id: user_id
+      [Op.or]: [{from: user_id}, {to: user_id}]
     },
-    order: order_by
-  }).then(items => {
-      callback(items);
+    order: ['dateCreate', 'DESC']
+  }).then(messages => {
+      callback(messages);
   });
 };
 
-exports.findAllItemsByTitle = function (title,  order_by, callback) {
+
+
+exports.findAllMessages = function (order_by, callback) {
   Items.findAll({
-    where: {
-      title: title
-    },
-    order: order_by
-  }).then(items => {
-      callback(items);
+    order: ['dateCreate', 'DESC']
+  }).then(messages => {
+      callback(messages);
   });
 };
 
 
-exports.findAllItemsByUser_id = function (user_id, order_by, callback) {
-  Items.findAll({
-    where: {
-      user_id: user_id
-    },
-    order: order_by
-  }).then(items => {
-      callback(items);
-  });
-};
-
-
-exports.findAllItems = function (order_by, callback) {
-  Items.findAll({
-    order: order_by
-  }).then(items => {
-      callback(items);
-  });
-};
-
-
-exports.createItem = function (token, title, description, image, callback) {
+exports.createMessage = function (from, to, message, owner, callback) {
     
-    User.findOne({
-      where: {
-        token: token
-      }
-    }).then(user => {
-      if (user) {
-         Items.sync({force: false}).then(() => {
-          Items.create({
-            title: title,
-            description: description,
-            image: "",
-            user_id: user.id
-          }).then((item)=>{
-            callback(user, item)
-          });
-        });
-      } else {
-        callback(user, item, 404);
-      }
+    
+  Messages.sync({force: false}).then(() => {
+    Messages.create({
+        from: from,
+        to: to,
+        message: message,
+        owner: owner
+      }).then((item)=>{
+        callback(user, item)
+      });
     });
 };
-
-
-exports.findItemById = function (id, callback) {
-  Items.findOne({
-        where: {
-        id: id
-      }
-  }).then(item => {
-      callback(item);
-  });
-};
-
 
 
 
@@ -151,17 +110,6 @@ exports.connnectToDatabase = function () {
   	});
 };
 
-
-exports.findAllUsersByNameAndMail = function (name, email, callback) {
-  User.findAll({
-        where: {
-        name: name,
-        email: email
-      }
-  }).then(users => {
-      callback(users);
-  });
-};
 
 exports.findAllUsersByName = function (name, callback) {
   User.findAll({
