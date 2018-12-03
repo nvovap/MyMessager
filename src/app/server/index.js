@@ -7,15 +7,22 @@ const app = express();
 //initialize a simple http server
 const server = http.createServer(app);
 
+var authenticationFile = require('./authentication_file');
 
 app.use(authenticationFile.checkToken);
-
-
 
 //start our server
 server.listen(process.env.PORT || 54321, () => {
     console.log(`Server started on port ${server.address().port} :)`);
 });
+
+
+
+app.post('/api/login', authenticationFile.login);
+app.post('/api/register', authenticationFile.register);
+
+
+
 
 //initialize the WebSocket server instance
 const wss = new WebSocket.Server({ server });

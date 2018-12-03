@@ -66,15 +66,18 @@ exports.getUserById = function(req,res){
 //checkAccess
 exports.checkToken = function (req, res, next) {
 
-
-  datamodel.findUserByToken(req.headers.authorization, (user) => {
-     if (user) {
-        next();
-    } else {
-    //res.statusCode = 400;
-      return res.status(400).json({error: 'No credentials sent!' });
-    }
-  });
+  if (req.method == "POST" && (req.path == "/api/login" || req.path == "/api/register")) {
+    next();
+  } else {
+    datamodel.findUserByToken(req.headers.authorization, (user) => {
+      if (user) {
+         next();
+     } else {
+     //res.statusCode = 400;
+       return res.status(400).json({error: 'No credentials sent!' });
+     }
+    });
+  }  
 };
 
 
