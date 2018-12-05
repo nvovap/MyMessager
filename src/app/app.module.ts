@@ -7,18 +7,25 @@ import { WorkspaceComponent } from './workspace/workspace.component';
 import { MessageComponent } from './message/message.component';
 import { TimeComponent } from './time/time.component';
 import { FormsModule } from '@angular/forms';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { HttpClientModule } from '@angular/common/http';
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
     WorkspaceComponent,
     MessageComponent,
-    TimeComponent
+    TimeComponent,
+    LoginPageComponent
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

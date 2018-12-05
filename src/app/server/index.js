@@ -11,6 +11,26 @@ var authenticationFile = require('./authentication_file');
 
 app.use(authenticationFile.checkToken);
 
+
+//Setup parser file from POST request\
+var busboy = require('connect-busboy')
+//app.use(busboy());
+app.use(busboy({ immediate: true }));
+//app.use(busboy({ immediate: true }));
+// 
+
+
+//Cross-Origin Resource Sharing 
+var cors = require('cors')
+var corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+app.use(cors(corsOptions))
+//Cross-Origin Resource Sharing 
+
+
+
 //start our server
 server.listen(process.env.PORT || 54321, () => {
     console.log(`Server started on port ${server.address().port} :)`);

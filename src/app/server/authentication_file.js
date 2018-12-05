@@ -66,7 +66,8 @@ exports.getUserById = function(req,res){
 //checkAccess
 exports.checkToken = function (req, res, next) {
 
-  if (req.method == "POST" && (req.path == "/api/login" || req.path == "/api/register")) {
+
+  if (req.method == "POST" && (req.path == "/api/login" || req.path == "/api/register") || req.method == "OPTIONS") {
     next();
   } else {
     datamodel.findUserByToken(req.headers.authorization, (user) => {
@@ -83,62 +84,7 @@ exports.checkToken = function (req, res, next) {
 
 
 
-exports.register = function(req,res){
-  var name    = "";
-  var email    = ""; 
-  var password = "";
-  var phone    = ""; 
 
-  // if (req.busboy == nil) {
-  //   res.status(423).send(''); 
-  //   return;
-  // }
-
-  req.pipe(req.busboy);
-
-  req.busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {
-    
-
-    val  = val.replace( "\r\n", "" );
-    
-    if (fieldname == 'email') {
-      email = val;
-    }
-
-    if (fieldname == 'name') {
-      name = val;
-    }
-
-    if (fieldname == 'password') {
-      password = val;
-    }
-
-    if (fieldname == 'phone') {
-      phone = val;
-    }
-
-  });
-
-  req.busboy.on('finish', function() {
-
-    if (!itIsPhonenumber(phone)) {
-      res.status(422).json({"field": "phone", "message": "Phone must match the format +XX(XXX)XXX-XX-XX" });
-    } else if (!itIsEmail(email)) {
-      res.status(422).json({"field": "email", "message": "It is not email"});
-    } else {
-      datamodel.createUser(name, email, password, phone, (token, err) => {
-        if (err) {
-          res.status(423).json(err); 
-        } else {
-          res.json({token: token}); 
-        }
-      
-      })
-    }
-
-  });
-
-}
 
 
 
@@ -195,9 +141,76 @@ exports.meUpdate = function(req,res){
 }
 
 
+exports.register = function(req,res){
+  var name    = "";
+  var email    = ""; 
+  var password = "";
+  var phone    = ""; 
+
+  // if (req.busboy == nil) {
+  //   res.status(423).send(''); 
+  //   return;
+  // }
+
+  if (!req.busboy) {
+    res.status(999).json({}); 
+    return;
+  }
+
+  req.pipe(req.busboy);
+
+  req.busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {
+    
+
+    val  = val.replace( "\r\n", "" );
+    
+    if (fieldname == 'email') {
+      email = val;
+    }
+
+    if (fieldname == 'name') {
+      name = val;
+    }
+
+    if (fieldname == 'password') {
+      password = val;
+    }
+
+    if (fieldname == 'phone') {
+      phone = val;
+    }
+
+  });
+
+  req.busboy.on('finish', function() {
+
+    if (!itIsPhonenumber(phone)) {
+      res.status(422).json({"field": "phone", "message": "Phone must match the format +XX(XXX)XXX-XX-XX" });
+    } else if (!itIsEmail(email)) {
+      res.status(422).json({"field": "email", "message": "It is not email"});
+    } else {
+      datamodel.createUser(name, email, password, phone, (token, err) => {
+        if (err) {
+          res.status(423).json(err); 
+        } else {
+          res.json({token: token}); 
+        }
+      
+      })
+    }
+
+  });
+
+}
+
 exports.login = function(req,res){
   var email    = ""; 
   var password = "";
+
+  if (!req.busboy) {
+    res.status(999).json({}); 
+    return;
+  }
 
   req.pipe(req.busboy);
 

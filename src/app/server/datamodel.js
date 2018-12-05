@@ -2,7 +2,7 @@
 const Sequelize = require('sequelize');
 const crypto = require('crypto');
 
-process.env.HOSTPOSTGRES = '10.10.1.242'
+process.env.HOSTPOSTGRES = '10.10.1.243'
 
 //const sequelize = new Sequelize('map_new_york', 'postgres', '123', {
 const sequelize = new Sequelize('messager', process.env.USERPOSTGRES || 'postgres', process.env.PSWPOSTGRES || '123', {

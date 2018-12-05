@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="input-field col s12">
+    <input [(ngModel)]="user.email" id="email" type="text" class="validate">
+    <label class="active" for="email">Электронная почта</label>
+  </div>
+
+  <div class="input-field col s12">
+    <input [(ngModel)]="user.name" id="user_name" type="text" class="validate">
+    <label class="active" for="user_name">Имя пользователя</label>
+  </div>
+
+  <div class="input-field col s12">
+    <input [(ngModel)]="user.password" id="password" type="password" class="validate">
+    <label class="active" for="password">пароль</label>
+  </div>
+
+  <div class="input-field col s12">
+    <input [(ngModel)]="user.phone" id="phone" type="text" class="validate">
+    <label class="active" for="phone">номер телефона</label>
+  </div>
+
+  <a class="waves-effect waves-light btn" (click)="onChange(user)">Войти</a>
+</div>
