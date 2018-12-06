@@ -8,3 +8,12 @@ export class User {
       
     ) { }
   }
+
+
+  export class Token {
+    token: string = "";
+  
+    constructor(
+        
+      ) { }
+    }

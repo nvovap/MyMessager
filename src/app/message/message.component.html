@@ -1,5 +1,8 @@
 <div>
     <div class="message "  [ngClass]="{'self_message':message.isSelf}">
+        <div class="sender_message">
+            {{message.sender}}
+        </div>
         {{message.content}}
     </div>
 </div>

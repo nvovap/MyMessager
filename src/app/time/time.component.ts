@@ -29,7 +29,7 @@ export class TimeComponent implements OnInit {
                 if (message.typeMessage == 1) {
                   this.time = message.content
                 } else if (message.typeMessage == 3) {
-                  const message = new Message('1234567890', '', 3);
+                  const message = new Message(localStorage.getItem('token'), '', 3);
                   this.socket$.next(message);
                 }
               },

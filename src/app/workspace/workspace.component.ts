@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { MessageService } from '../message.service';
 import { WebSocketSubject } from 'rxjs/observable/dom/WebSocketSubject';
+import { User } from '../User';
 
 
 
@@ -16,21 +17,34 @@ export class Message {
 @Component({
   selector: 'app-workspace',
   templateUrl: './workspace.component.html',
-  styleUrls: ['./workspace.component.css']
+  styleUrls: ['./workspace.component.css'],
+  // providers: [MessageService]
 })
 
 export class WorkspaceComponent implements OnInit { 
 
-  public masseges = new Array<Message>();
+  public messages = new Array<Message>();
+
+
+
 
   textMessage = ''
+
+
   
   last = true
+
+  user = new User();
+
+  
 
   sender = Math.random().toString(36).slice(2)
 
   private socket$: WebSocketSubject<Message>;
   
+//   headers : {
+//     Authorization : localStorage.getItem('Token')
+// },
 
   constructor(private messageService: MessageService, private element: ElementRef) { 
     // const nativeElement = this.viewer.nativeElement;
@@ -42,10 +56,13 @@ export class WorkspaceComponent implements OnInit {
             .subscribe(
               (message) => {
                 if (message.typeMessage == 0) {
-                  this.masseges.push(message)
+                  this.messages.push(message)
                 } else if (message.typeMessage == 3) {
-                  const message = new Message('1234567890', '', 3);
+                  const message = new Message(localStorage.getItem('token'), '', 3);
                   this.socket$.next(message);
+                } else if (message.typeMessage == 5) {
+                  //console.log(JSON.parse(message.content))
+                  this.user = JSON.parse(message.content);
                 }
               },
               (err) => {
@@ -57,18 +74,18 @@ export class WorkspaceComponent implements OnInit {
   }
 
  send() {
-    const message = new Message(this.sender, this.textMessage, 0);
+    const message = new Message(this.user.name, this.textMessage, 0);
 
-    this.masseges.push(message);
+    this.messages.push(message);
     this.socket$.next(message);
     this.textMessage = '';
     this.scrollToBottom();
 }
 
   ngOnInit() {
-    ///this.masseges = this.messageService.getMessages();
+    this.messages = this.messageService.getMessages();
 
-    console.log(this.masseges)
+    console.log(this.messages)
   }
 
   onChange() {

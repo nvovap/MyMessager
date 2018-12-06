@@ -1,7 +1,8 @@
 <div class="workspace">
+    <p>User name:{{user.name}} email: {{user.email}} phone: {{user.phone}}</p>
     <app-message
-        *ngFor="let message of masseges"
-        [message] = "{content: message.content, isSelf: (message.sender==sender)}"
+        *ngFor="let message of messages"
+        [message] = "{content: message.content, isSelf: (message.sender==user.name), sender: message.sender}"
     >
     </app-message>
 

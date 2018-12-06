@@ -1,6 +1,8 @@
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
+const datamodel = require('./datamodel');
+
 
 const app = express();
 
@@ -87,7 +89,17 @@ wss.on('connection', (ws) => {
 
                 if  (ws.token && (message.typeMessage == 3)) {
                     //TODO aut for token
-                    ws.authorize = true;
+
+                    datamodel.findUserByToken(ws.token, (user)=>{
+                        if (user) {
+                            ws.authorize = true;
+                            ws.user = user;
+
+                            ws.send(createMessage(JSON.stringify({email: user.email, name: user.name,password: "", phone: user.phone }), 5, ''));
+
+                            next();
+                        }
+                    })
 
                 }  else {
                     const extWs = ws ;

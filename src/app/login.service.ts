@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, , HttpHeaders } from '@angular/common/http';
-import { User } from './User';
+import { HttpClient } from '@angular/common/http';
+import { User, Token } from './User';
 
 
 // const HttpUploadOptions = {
@@ -17,7 +17,12 @@ export class LoginService {
   postLogin(user: User){
          
     const body = {email: user.email, password: user.password};
-    return this.http.post('http://localhost:54321/api/login', body); 
+
+    let input = new FormData();
+    // Add your values in here
+    input.append('email', user.email);
+    input.append('password', user.password);
+    return this.http.post<Token>('http://localhost:54321/api/login', input); 
   }
 
   postRegister(user: User){
@@ -45,7 +50,7 @@ export class LoginService {
     input.append('phone', user.phone);
 
 
-    return this.http.post<User>('http://localhost:54321/api/register', input); 
+    return this.http.post<Token>('http://localhost:54321/api/register', input); 
 
     //return this.http.post<User>('http://localhost:54321/api/register', user, option); 
   }

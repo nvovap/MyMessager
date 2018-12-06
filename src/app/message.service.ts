@@ -6,11 +6,12 @@ import { Injectable } from '@angular/core';
 export class MessageService {
   
   messages = [
-    {isSelf: false, text: 'Hi!'},
-    {isSelf: false, text: 'How are your?'},
-    {isSelf: true, text: 'Hi!'},
-    {isSelf: false, text: 'What do you do?'},
+    {sender: "nvovap3", content: 'Hi!', typeMessage: 0},
+    {sender: "nvovap", content: 'Hello!', typeMessage: 0},
+    {sender: "nvovap3", content: 'I love you!', typeMessage: 0},
+    {sender: "nvovap", content: 'Me too!', typeMessage: 0},
   ]
+
 
 
   

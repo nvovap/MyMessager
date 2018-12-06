@@ -2,17 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../login.service';
 import { User } from '../User';
 
-
 @Component({
-  selector: 'app-login-page',
-  templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.css'],
+  selector: 'app-register-page',
+  templateUrl: './register-page.component.html',
+  styleUrls: ['./register-page.component.css'],
   providers: [
     LoginService
   ]
-
 })
-export class LoginPageComponent implements OnInit {
+export class RegisterPageComponent implements OnInit {
 
   user = new User();
 
@@ -26,7 +24,7 @@ export class LoginPageComponent implements OnInit {
   onChange(email, pasword) {
     console.log('data POST');
   	
-    this.http.postLogin(this.user).subscribe((data) => {
+    this.http.postRegister(this.user).subscribe((data) => {
       localStorage.setItem("token", data.token);
     })
   }

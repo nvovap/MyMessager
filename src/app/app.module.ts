@@ -9,6 +9,9 @@ import { TimeComponent } from './time/time.component';
 import { FormsModule } from '@angular/forms';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { HttpClientModule } from '@angular/common/http';
+import { RegisterPageComponent } from './register-page/register-page.component';
+
+
 
 
 
@@ -18,7 +21,8 @@ import { HttpClientModule } from '@angular/common/http';
     WorkspaceComponent,
     MessageComponent,
     TimeComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    RegisterPageComponent
 
   ],
   imports: [
