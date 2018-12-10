@@ -57,6 +57,8 @@ export class WorkspaceComponent implements OnInit {
               (message) => {
                 if (message.typeMessage == 0) {
                   this.messages.push(message)
+                  this.scrollToBottom();
+
                 } else if (message.typeMessage == 3) {
                   const message = new Message(localStorage.getItem('token'), '', 3);
                   this.socket$.next(message);

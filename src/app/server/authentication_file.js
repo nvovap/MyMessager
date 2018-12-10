@@ -65,9 +65,9 @@ exports.getUserById = function(req,res){
 
 //checkAccess
 exports.checkToken = function (req, res, next) {
-
-
-  if (req.method == "POST" && (req.path == "/api/login" || req.path == "/api/register") || req.method == "OPTIONS") {
+  if (req.method == "GET" && req.path == "/login") {
+    next();
+  } else if (req.method == "POST" && (req.path == "/api/login" || req.path == "/api/register") || req.method == "OPTIONS") {
     next();
   } else {
     datamodel.findUserByToken(req.headers.authorization, (user) => {

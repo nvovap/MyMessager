@@ -1,14 +1,19 @@
 
 .sender_message {
   color: rgb(51, 51, 223);
-  margin-top: -20px;
-  margin-left: -20px;
+  margin-top: 50px;
+  margin-left: 1px;
   position: relative;
 }
 
+.sender_self_message {
+  margin-left: 64%;
+}
+
 .message {
+    opacity: 90%;
     position: relative;
-    margin-top: 50px;
+    margin-top: 1px;
     width: 36%;
     height: auto;
     border-radius: 10px;

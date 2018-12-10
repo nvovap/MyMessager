@@ -3,8 +3,15 @@ const http = require('http');
 const WebSocket = require('ws');
 const datamodel = require('./datamodel');
 
-
+const path = require('path');
 const app = express();
+
+const root = './';
+
+
+
+
+
 
 //initialize a simple http server
 const server = http.createServer(app);
@@ -12,6 +19,10 @@ const server = http.createServer(app);
 var authenticationFile = require('./authentication_file');
 
 app.use(authenticationFile.checkToken);
+
+//app.set('view engine', 'html');
+
+app.use(express.static(path.join(root, 'dist/MyMessager')));
 
 
 //Setup parser file from POST request\
@@ -39,6 +50,21 @@ server.listen(process.env.PORT || 54321, () => {
 });
 
 
+// app.get('*', (req, res) => {
+//     res.sendFile('dist/MyMessager/index.html', {root});
+// });
+
+
+/* Server-side rendering */
+function angularRouter(req, res) {
+    /* Server-side rendering */
+    res.render('index', { req, res });
+
+   // res.redirect('/login');
+}
+
+/* Direct all routes to index.html, where Angular will take care of routing */
+app.get('*', angularRouter);
 
 app.post('/api/login', authenticationFile.login);
 app.post('/api/register', authenticationFile.register);
@@ -56,8 +82,6 @@ var clients = [];
 
 
 wss.on('connection', (ws) => {
-    console.log(wss.clients)
-
     const extWs = ws ;
 
     extWs.isAlive = true;
@@ -65,7 +89,6 @@ wss.on('connection', (ws) => {
     ws.authorize = false;
     ws.token = '';
 
-    console.log(extWs)
 
     ws.send(createMessage(""+Date(), 3, 'OK'));
     
@@ -96,8 +119,6 @@ wss.on('connection', (ws) => {
                             ws.user = user;
 
                             ws.send(createMessage(JSON.stringify({email: user.email, name: user.name,password: "", phone: user.phone }), 5, ''));
-
-                            next();
                         }
                     })
 
