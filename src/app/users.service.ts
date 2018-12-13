@@ -20,7 +20,7 @@ export class UsersService {
     }
 
 
-      return this.http.get<[User]>(this.host+'',option); 
+      return this.http.get<[User]>(this.host+'',option)
   }
 
 }
