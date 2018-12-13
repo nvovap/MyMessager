@@ -65,20 +65,35 @@ exports.getUserById = function(req,res){
 
 //checkAccess
 exports.checkToken = function (req, res, next) {
-  if (req.method == "GET" && req.path == "/login") {
-    next();
-  } else if (req.method == "POST" && (req.path == "/api/login" || req.path == "/api/register") || req.method == "OPTIONS") {
-    next();
-  } else {
+  // if (req.method == "GET" && req.path == "/login") {
+  //   next();
+  // } else if (req.method == "POST" && (req.path == "/api/login" || req.path == "/api/register") || req.method == "OPTIONS") {
+  //   next();
+  // } else {
+  //   datamodel.findUserByToken(req.headers.authorization, (user) => {
+  //     if (user) {
+  //        next();
+  //    } else {
+  //    //res.statusCode = 400;
+  //       next();
+  //      //return res.status(400).json({error: 'No credentials sent!' });
+  //    }
+  //   });
+  //}  
+
+  if (req.method == "POST" && (req.path == "/api/login" || req.path == "/api/register") || req.method == "OPTIONS") {
+     next();
+  } else if  ( req.path.indexOf("/api/") >= 0 ) {
     datamodel.findUserByToken(req.headers.authorization, (user) => {
       if (user) {
-         next();
-     } else {
-     //res.statusCode = 400;
-       return res.status(400).json({error: 'No credentials sent!' });
-     }
-    });
-  }  
+        next();
+      } else {
+        return res.status(400).json({error: 'No credentials sent!' });
+      }
+    })
+  } else {
+    next()
+  }
 };
 
 

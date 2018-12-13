@@ -50,7 +50,10 @@ export class WorkspaceComponent implements OnInit {
     // const nativeElement = this.viewer.nativeElement;
     // console.log(nativeElement.scrollHeight - (nativeElement.scrollTop + nativeElement.clientHeight));
 
-    this.socket$ = new WebSocketSubject('ws://localhost:54321',);
+    const host =  'wss://my-messager.herokuapp.com';
+    const port = 54320;
+
+    this.socket$ = new WebSocketSubject(host);
 
     this.socket$
             .subscribe(

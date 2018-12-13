@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../login.service';
 import { User } from '../User';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -16,18 +17,20 @@ export class LoginPageComponent implements OnInit {
 
   user = new User();
 
-  constructor(private http: LoginService) { }
+  constructor(private http: LoginService, private router: Router) { }
 
 
   ngOnInit() {
     
   }
 
-  onChange(email, pasword) {
+  onChange() {
     console.log('data POST');
   	
     this.http.postLogin(this.user).subscribe((data) => {
       localStorage.setItem("token", data.token);
+
+      this.router.navigate(['/'])
     })
   }
 

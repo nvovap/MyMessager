@@ -21,7 +21,7 @@ export class RegisterPageComponent implements OnInit {
     
   }
 
-  onChange(email, pasword) {
+  onChange() {
     console.log('data POST');
   	
     this.http.postRegister(this.user).subscribe((data) => {

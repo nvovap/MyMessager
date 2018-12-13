@@ -22,7 +22,7 @@ app.use(authenticationFile.checkToken);
 
 //app.set('view engine', 'html');
 
-app.use(express.static(path.join(root, 'dist/MyMessager')));
+app.use(express.static(path.join(root, 'MyMessager')));
 
 
 //Setup parser file from POST request\
@@ -70,6 +70,11 @@ app.post('/api/login', authenticationFile.login);
 app.post('/api/register', authenticationFile.register);
 
 
+app.get('/api/getusers', authenticationFile.getUsersByNameOrMail);
+
+
+
+
 
 
 //initialize the WebSocket server instance
@@ -82,6 +87,7 @@ var clients = [];
 
 
 wss.on('connection', (ws) => {
+
     const extWs = ws ;
 
     extWs.isAlive = true;
@@ -98,14 +104,17 @@ wss.on('connection', (ws) => {
 
         const message = JSON.parse(msg);
 
+        console.log(message);
+
         if (ws.authorize) {
             
 
             wss.clients.forEach(client => {
-                if (client != ws) {
+                if (client.user != ws.user) {
                     client.send(createMessage(message.content, 0, message.sender));
                 }
             });
+
         }  else {
             try { 
                 ws.token =  message.sender;
@@ -170,6 +179,8 @@ setInterval(() => {
 
 setInterval(() => {
     wss.clients.forEach((ws) => {
+        console.log('Timer '+ Date() + ' ws.isAlive = ' + ws.isAlive + ' ws.authorize '+ ws.authorize);
+
         if (ws.isAlive &&  ws.authorize) ws.send(createMessage(""+Date(), 1, ''));
     });
 }, 1000);

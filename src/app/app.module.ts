@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RegisterPageComponent } from './register-page/register-page.component';
+import { ListUsersComponent } from './list-users/list-users.component';
 
 
 
@@ -22,7 +23,8 @@ import { RegisterPageComponent } from './register-page/register-page.component';
     MessageComponent,
     TimeComponent,
     LoginPageComponent,
-    RegisterPageComponent
+    RegisterPageComponent,
+    ListUsersComponent
 
   ],
   imports: [

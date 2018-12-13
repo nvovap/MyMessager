@@ -12,7 +12,9 @@ export class LoginService {
 
   constructor(private http: HttpClient) { }
 
+  host = 'https://my-messager.herokuapp.com'
 
+  //host = 'http://localhost:54321'
 
   postLogin(user: User){
          
@@ -22,7 +24,7 @@ export class LoginService {
     // Add your values in here
     input.append('email', user.email);
     input.append('password', user.password);
-    return this.http.post<Token>('http://localhost:54321/api/login', input); 
+    return this.http.post<Token>(this.host+'/api/login', input); 
   }
 
   postRegister(user: User){
@@ -50,7 +52,7 @@ export class LoginService {
     input.append('phone', user.phone);
 
 
-    return this.http.post<Token>('http://localhost:54321/api/register', input); 
+    return this.http.post<Token>(this.host+'/api/register', input); 
 
     //return this.http.post<User>('http://localhost:54321/api/register', user, option); 
   }

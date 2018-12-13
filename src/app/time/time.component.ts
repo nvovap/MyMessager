@@ -20,8 +20,15 @@ export class TimeComponent implements OnInit {
   private socket$: WebSocketSubject<Message>;
   time = ""
 
+
   constructor() { 
-    this.socket$ = new WebSocketSubject('ws://localhost:54321',);
+    const host =  'wss://my-messager.herokuapp.com';
+    const port = 54320;
+
+    //this.socket$ = new WebSocketSubject(host + ':' + port);
+    this.socket$ = new WebSocketSubject(host);
+
+    console.log(this.socket$)
 
     this.socket$
             .subscribe(
