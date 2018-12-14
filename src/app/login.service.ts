@@ -14,7 +14,7 @@ export class LoginService {
 
   host = 'https://my-messager.herokuapp.com'
 
-  //host = 'http://localhost:54321'
+ // host = 'http://localhost:5432'
 
   postLogin(user: User){
          

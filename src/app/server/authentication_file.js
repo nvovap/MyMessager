@@ -26,6 +26,15 @@ function itIsEmail(inputtxt) {
 //================
 
 
+exports.getUsers= function(req,res){
+
+ 
+    datamodel.findAllUser((users) => {
+      res.send(users);
+    })
+
+}
+
 
 exports.getUsersByNameOrMail = function(req,res){
 
@@ -81,7 +90,7 @@ exports.checkToken = function (req, res, next) {
   //   });
   //}  
 
-  if (req.method == "POST" && (req.path == "/api/login" || req.path == "/api/register") || req.method == "OPTIONS") {
+  if (req.method == "POST" && (req.path == "/api/login" || req.path == "/api/register" || req.path == "/api/users")  || req.method == "OPTIONS") {
      next();
   } else if  ( req.path.indexOf("/api/") >= 0 ) {
     datamodel.findUserByToken(req.headers.authorization, (user) => {

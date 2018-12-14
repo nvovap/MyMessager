@@ -45,7 +45,7 @@ app.use(cors(corsOptions))
 
 
 //start our server
-server.listen(process.env.PORT || 54321, () => {
+server.listen(process.env.PORT || 5432, () => {
     console.log(`Server started on port ${server.address().port} :)`);
 });
 
@@ -65,12 +65,15 @@ function angularRouter(req, res) {
 
 /* Direct all routes to index.html, where Angular will take care of routing */
 app.get('*', angularRouter);
+// app.get('/', angularRouter);
+// app.get('/register', angularRouter);
+// app.get('/login', angularRouter);
 
 app.post('/api/login', authenticationFile.login);
 app.post('/api/register', authenticationFile.register);
 
 
-app.get('/api/getusers', authenticationFile.getUsersByNameOrMail);
+app.post('/api/getusers', authenticationFile.getUsers);
 
 
 

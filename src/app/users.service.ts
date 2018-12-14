@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from './User';
 
 @Injectable({
@@ -9,18 +9,34 @@ export class UsersService {
 
   constructor(private http: HttpClient) { }
 
-  host = 'https://my-messager.herokuapp.com'
+ host = 'https://my-messager.herokuapp.com'
+//host = 'http://localhost:5432'
 
 
   getUsers() {
-    const option = {
-      headers:{
-        'Authorization' : localStorage.getItem('Token')
+
+    // const headers = new HttpHeaders()
+    //     .set('Content-Type', 'application/x-www-form-urlencoded')
+    //     .set('Authorization', localStorage.getItem('Token'));
+
+    // let options = new RequestOptions({ headers: headers });
+
+    let token = localStorage.getItem('token');
+
+
+    if (!token) {
+      token = '';
+    }
+
+    const headers =  {
+      headers: {
+          'Authorization': token,
       }
     }
 
 
-      return this.http.get(this.host+'',option)
+    //return this.http.get<[User]>(this.host+'/api/getusers')
+    return this.http.post<[User]>(this.host+'/api/getusers?name=&email=','', headers)
   }
 
 }

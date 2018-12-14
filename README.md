@@ -28,3 +28,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 
 psql -d d2q47tjs367bl3 -U rnytkujvmynchx  -h ec2-54-246-117-62.eu-west-1.compute.amazonaws.com
+
+
+UPDATE users SET token = "179578710529" WHERE name = 'nvovap';
